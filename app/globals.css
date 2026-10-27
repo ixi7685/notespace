@@ -1,26 +1,286 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #090c16;
+  --foreground: #f2f1ff;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-space-grotesk);
+  --font-serif: var(--font-orbitron);
+  --font-mono: var(--font-space-grotesk);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-space-grotesk), Arial, sans-serif;
+}
+
+button,
+label {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+label:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #ffb454;
+  outline-offset: 2px;
+}
+
+/* Aurora canvas: the full-app backdrop */
+.aurora-canvas {
+  background-color: #0a0e1c;
+  background-image:
+    radial-gradient(circle at 15% 15%, rgba(255, 180, 84, 0.1), transparent 32%),
+    radial-gradient(circle at 85% 10%, rgba(140, 120, 255, 0.16), transparent 34%),
+    radial-gradient(circle at 60% 90%, rgba(255, 120, 150, 0.08), transparent 36%),
+    linear-gradient(150deg, #0a0d1c 0%, #120e28 55%, #170f26 100%);
+  background-size: cover;
+  background-position: center;
+}
+
+/* Glass surfaces used by sidebar, header, modals */
+.glass-panel {
+  background: rgba(20, 22, 41, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+}
+
+.glass-panel-soft {
+  background: rgba(24, 26, 48, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+}
+
+/* Note card surface */
+.note-surface {
+  position: relative;
+  background:
+    linear-gradient(160deg, rgba(34, 34, 64, 0.97), rgba(40, 27, 66, 0.95));
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f2f1ff;
+}
+
+.note-surface::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(255, 180, 84, 0.14), transparent 38%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 45%);
+}
+
+.note-card-content {
+  position: relative;
+}
+
+.note-toolbar button {
+  flex-shrink: 0;
+  min-height: 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.04);
+  color: #d8d9f5;
+  padding-inline: 0.85rem;
+  transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
+}
+
+.note-toolbar button:hover {
+  border-color: rgba(255, 180, 84, 0.45);
+  background: rgba(255, 180, 84, 0.1);
+  color: #ffe4bd;
+  transform: translateY(-1px);
+}
+
+.editor-toolbar .editor-tool {
+  display: grid;
+  min-height: 2.15rem;
+  min-width: 2.15rem;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 0.55rem;
+  color: #cdd0ed;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.editor-toolbar .editor-tool:hover,
+.editor-toolbar .editor-tool:focus-visible,
+.editor-toolbar .editor-tool.is-active {
+  border-color: rgba(255, 180, 84, 0.35);
+  background: rgba(255, 180, 84, 0.12);
+  color: #ffe4bd;
+}
+
+.editor-textarea {
+  box-sizing: border-box;
+  min-height: 240px;
+  font-family: var(--font-space-grotesk), Arial, sans-serif;
+  scrollbar-color: #4b4470 rgba(10, 12, 24, 0.4);
+  scrollbar-width: thin;
+}
+
+.editor-surface {
+  cursor: text;
+}
+
+.tiptap-content {
+  min-height: 100%;
+  color: #e2e3f7;
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.tiptap-content p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  color: #6e7396;
+  pointer-events: none;
+}
+
+.tiptap-content code {
+  border-radius: 0.35rem;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.1rem 0.35rem;
+  font-size: 0.9em;
+}
+
+.editor-select {
+  min-height: 2.15rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.55rem;
+  background: #101124;
+  color: #dfe1fb;
+  padding: 0 0.6rem;
+  font-size: 0.75rem;
+  outline: none;
+}
+
+.editor-select:focus-visible {
+  border-color: rgba(255, 180, 84, 0.5);
+  box-shadow: 0 0 0 2px rgba(255, 180, 84, 0.12);
+}
+
+.editor-divider {
+  width: 1px;
+  height: 1.5rem;
+  margin-inline: 0.25rem;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.rich-editor h2,
+.rich-editor h3 {
+  margin: 1.1rem 0 0.45rem;
+  color: #ffffff;
+  font-family: var(--font-orbitron), sans-serif;
+  line-height: 1.35;
+}
+
+.rich-editor h2 { font-size: 1.45rem; }
+.rich-editor h3 { font-size: 1.15rem; }
+
+.rich-editor p { margin: 0.35rem 0; }
+.rich-editor ul,
+.rich-editor ol { margin: 0.7rem 0; padding-left: 1.5rem; }
+.rich-editor ul { list-style: disc; }
+.rich-editor ol { list-style: decimal; }
+.rich-editor blockquote {
+  margin: 1rem 0;
+  border-left: 3px solid #ffb454;
+  color: #ffd9a8;
+  padding-left: 1rem;
+  font-style: italic;
+}
+.rich-editor a { color: #8fc8ff; text-decoration: underline; text-underline-offset: 3px; }
+.rich-editor pre {
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.7rem;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.8rem;
+  font-family: var(--font-space-grotesk), monospace;
+  font-size: 0.85rem;
+}
+
+/* Primary/command buttons across the app */
+.btn {
+  display: inline-flex;
+  min-height: 2.6rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: 0.85rem;
+  padding-inline: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: #dfe1fb;
+  transition: 160ms ease;
+}
+
+.btn:hover {
+  border-color: rgba(255, 180, 84, 0.4);
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  border-color: transparent;
+  background: linear-gradient(135deg, #ffb454, #ff8a5c);
+  color: #1a0e02;
+  box-shadow: 0 8px 28px rgba(255, 138, 92, 0.28);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #ffc978, #ff9d73);
+}
+
+.btn-danger {
+  border-color: rgba(255, 122, 122, 0.3);
+  background: rgba(255, 90, 90, 0.1);
+  color: #ffb9b9;
+}
+
+.btn-danger:hover {
+  background: rgba(255, 90, 90, 0.18);
+}
+
+.notes-scrollbar {
+  scrollbar-color: #4b4470 rgba(10, 12, 24, 0.4);
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+}
+
+.notes-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.notes-scrollbar::-webkit-scrollbar-track {
+  background: rgba(10, 12, 24, 0.4);
+}
+
+.notes-scrollbar::-webkit-scrollbar-thumb {
+  background: #4b4470;
+  border: 2px solid rgba(10, 12, 24, 0.4);
+  border-radius: 999px;
+}
+
+.notes-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #6a5fa0;
+}
+
+::selection {
+  background: #ffb454;
+  color: #1a0e02;
 }
